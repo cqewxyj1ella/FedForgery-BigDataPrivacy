@@ -3,11 +3,12 @@
 # Python version: 3.6
 import torch
 from torch import nn
-import torch.nn.functional as F
 import sys
-sys.path.append('.')
+
+sys.path.append(".")
 from networks.vae import *
 from networks.resnet import resnet50
+
 
 class CVAE_imagenet(nn.Module):
     def __init__(self, d, k=10, num_classes=2, num_channels=3, **kwargs):
@@ -67,6 +68,6 @@ class CVAE_imagenet(nn.Module):
 
         l = self.decode(z_q)
         gx = self.L_bn(l)
-        out = self.classifier(x-gx)
+        out = self.classifier(x - gx)
 
         return out, gx, z_e, emb
