@@ -251,7 +251,7 @@ class ResNet(nn.Module):
 def _resnet(arch, block, layers, pretrained, num_classes,progress, **kwargs):
     model = ResNet(block, layers,num_classes, **kwargs)
     if pretrained:
-        pretrain_dict = torch.load(model_urls[arch])
+        pretrain_dict = torch.load("../pretrained/{}".format(model_urls[arch][36:]))
         model_dict = model.state_dict()
         pretrain_dict = {k: v for k, v in pretrain_dict.items() if k in model_dict and model_dict[k].size() == v.size()}
         model_dict.update(pretrain_dict)

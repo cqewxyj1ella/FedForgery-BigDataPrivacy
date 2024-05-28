@@ -104,7 +104,7 @@ if __name__ == '__main__':
         transforms.ToTensor(), 
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
     ])   
-    test_dataset = DogCat(r'testset', transforms=transform_test, train=False)# testset
+    test_dataset = DogCat(r'../test', transforms=transform_test, train=False)# testset
 
     # BUILD MODEL
     if args.dataset == 'cnn':
@@ -120,9 +120,12 @@ if __name__ == '__main__':
     else:
         exit('Error: unrecognized model')
 
-    path = 'pretrained/model.pth'
+    path = '../pretrained/model.pth'
     global_model.load_state_dict(torch.load(path))
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    args.gpu = torch.cuda.is_available()
+    if args.gpu:
+        global_model.to(device)
 
     test_acc, test_loss = test_inference(args, global_model, test_dataset)
     print('Test on', len(test_dataset), 'samples')
