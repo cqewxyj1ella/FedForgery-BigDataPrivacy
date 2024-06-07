@@ -37,10 +37,13 @@ def test_inference(args, model, test_dataset):
     device = "cuda" if args.gpu else "cpu"
 
     criterion = nn.CrossEntropyLoss().to(device)
+    print("criterion loaded")
     testloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
     for batch_idx, (images, labels) in enumerate(testloader):
         images, labels = images.to(device), labels.to(device)
+        print(images.shape, labels.shape)
+        print("images loaded, labels loaded")
 
         # Inference
         outputs = model(images)
@@ -126,7 +129,9 @@ if __name__ == "__main__":
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     else:
         device = torch.device("cpu")
+    print(device)
     global_model.to(device)
+    print("model loaded")
 
     test_acc, test_loss = test_inference(args, global_model, test_dataset)
     print("Test on", len(test_dataset), "samples")

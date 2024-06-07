@@ -1,1 +1,6 @@
 
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:0
+Test on 42800 samples
+Test Accuracy: 85.54%
