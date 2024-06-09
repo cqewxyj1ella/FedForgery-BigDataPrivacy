@@ -7,6 +7,7 @@ from torch.utils import data
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from src.models import CVAE_imagenet
+from options import args_parser
 
 
 # define a dataset class
@@ -36,9 +37,10 @@ class DogCat(data.Dataset):
 
 
 # Define hyperparameters
-batch_size = 32
-epochs = 10
-learning_rate = 0.001
+args = args_parser()
+batch_size = args.local_bs
+epochs = args.epochs
+learning_rate = args.lr
 
 # Define transformations
 transform = transforms.Compose(
@@ -76,6 +78,7 @@ for epoch in range(epochs):
 
         # Forward pass
         outputs, _, _, _ = model(images)
+        # TODO: I may need to design loss according to the paper.
         loss = criterion(outputs, labels)
 
         # Backward pass and optimization
@@ -100,4 +103,4 @@ for epoch in range(epochs):
         )
 
 # Save the model
-torch.save(model.state_dict(), "model.pth")
+torch.save(model.state_dict(), "../pretrained/retrain_model.pth")

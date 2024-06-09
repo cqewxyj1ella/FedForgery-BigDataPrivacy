@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Python version: 3.6
+import sys
 import torch
 from torch import nn
-import sys
+from networks.vae import ResBlock, NearestEmbed
+from networks.resnet import resnet50
 
 sys.path.append(".")
-from networks.vae import *
-from networks.resnet import resnet50
 
 
 class CVAE_imagenet(nn.Module):
@@ -38,7 +38,7 @@ class CVAE_imagenet(nn.Module):
         self.d = d
         self.emb = NearestEmbed(k, d)
 
-        for l in self.modules():
+        for l in self.modules():  # noqa: E741
             if isinstance(l, nn.Linear) or isinstance(l, nn.Conv2d):
                 l.weight.detach().normal_(0, 0.02)
                 torch.fmod(l.weight, 0.04)
@@ -66,7 +66,7 @@ class CVAE_imagenet(nn.Module):
         z_q, _ = self.emb(z_e, weight_sg=True)
         emb, _ = self.emb(z_e.detach())
 
-        l = self.decode(z_q)
+        l = self.decode(z_q)  # noqa: E741
         gx = self.L_bn(l)
         out = self.classifier(x - gx)
 

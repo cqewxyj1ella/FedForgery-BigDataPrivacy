@@ -1,50 +1,51 @@
 from __future__ import print_function
 import abc
-import os
-import math
 import numpy as np
-import logging
 import torch
 import torch.utils.data
 from torch import nn
 from torch.nn import init
 from torch.nn import functional as F
-from torch.autograd import Variable
-import pdb
 import sys
 from .resnet import resnet50
 from .nearest_embed import NearestEmbed
-sys.path.append('.')
-sys.path.append('..')
-#from utils.normalize import *
-
 import torch
-from torch import nn
-from torch.nn import functional as F
 
+
+sys.path.append(".")
+sys.path.append("..")
 CIFAR_MEAN = [0.4914, 0.4822, 0.4465]
 CIFAR_STD = [0.2470, 0.2435, 0.2616]
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
+
 def get_cifar_params(resol):
     mean_list = []
     std_list = []
     for i in range(3):
-        mean_list.append(torch.full((resol, resol), CIFAR_MEAN[i], device='cuda'))
-        std_list.append(torch.full((resol, resol), CIFAR_STD[i], device='cuda'))
-    return torch.unsqueeze(torch.stack(mean_list), 0), torch.unsqueeze(torch.stack(std_list), 0)
+        mean_list.append(torch.full((resol, resol), CIFAR_MEAN[i], device="cuda"))
+        std_list.append(torch.full((resol, resol), CIFAR_STD[i], device="cuda"))
+    return torch.unsqueeze(torch.stack(mean_list), 0), torch.unsqueeze(
+        torch.stack(std_list), 0
+    )
+
+
 def conv3x3(in_planes, out_planes, stride=1):
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True)
+    return nn.Conv2d(
+        in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True
+    )
+
 
 def conv_init(m):
     classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
+    if classname.find("Conv") != -1:
         init.xavier_uniform_(m.weight, gain=np.sqrt(2))
         init.constant_(m.bias, 0)
-    elif classname.find('BatchNorm') != -1:
+    elif classname.find("BatchNorm") != -1:
         init.constant_(m.weight, 1)
         init.constant_(m.bias, 0)
+
 
 class wide_basic(nn.Module):
     def __init__(self, in_planes, planes, dropout_rate, stride=1):
@@ -53,7 +54,9 @@ class wide_basic(nn.Module):
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=3, padding=1, bias=True)
         self.dropout = nn.Dropout(p=dropout_rate)
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=True)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=stride, padding=1, bias=True
+        )
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_planes != planes:
@@ -67,42 +70,50 @@ class wide_basic(nn.Module):
         out += self.shortcut(x)
         return out
 
+
 class CIFARNORMALIZE(nn.Module):
     def __init__(self, resol):
         super().__init__()
         self.mean, self.std = get_cifar_params(resol)
 
     def forward(self, x):
-        '''
+        """
         Parameters:
             x: input image with pixels normalized to ([0, 1] - IMAGENET_MEAN) / IMAGENET_STD
-        '''
+        """
         x = x.sub(self.mean)
         x = x.div(self.std)
         return x
+
 
 class Wide_ResNet(nn.Module):
     def __init__(self, depth, widen_factor, dropout_rate, num_classes, norm=False):
         super(Wide_ResNet, self).__init__()
         self.in_planes = 16
 
-        assert ((depth-4)%6 ==0), 'Wide-resnet depth should be 6n+4'
-        n = (depth-4)/6 
-        k = widen_factor 
+        assert (depth - 4) % 6 == 0, "Wide-resnet depth should be 6n+4"
+        n = (depth - 4) / 6
+        k = widen_factor
 
-        print('| Wide-Resnet %dx%d' % (depth, k))
-        nStages = [16, 16*k, 32*k, 64*k]
+        print("| Wide-Resnet %dx%d" % (depth, k))
+        nStages = [16, 16 * k, 32 * k, 64 * k]
         self.conv1 = conv3x3(3, nStages[0])
-        self.layer1 = self._wide_layer(wide_basic, nStages[1], n, dropout_rate, stride=1)
-        self.layer2 = self._wide_layer(wide_basic, nStages[2], n, dropout_rate, stride=2)
-        self.layer3 = self._wide_layer(wide_basic, nStages[3], n, dropout_rate, stride=2)
+        self.layer1 = self._wide_layer(
+            wide_basic, nStages[1], n, dropout_rate, stride=1
+        )
+        self.layer2 = self._wide_layer(
+            wide_basic, nStages[2], n, dropout_rate, stride=2
+        )
+        self.layer3 = self._wide_layer(
+            wide_basic, nStages[3], n, dropout_rate, stride=2
+        )
         self.bn1 = nn.BatchNorm2d(nStages[3], momentum=0.9)
         self.linear = nn.Linear(nStages[3], num_classes)
         self.normalize = CIFARNORMALIZE(32)
         self.norm = norm
 
     def _wide_layer(self, block, planes, num_blocks, dropout_rate, stride):
-        strides = [stride] + [1]*(int(num_blocks)-1)
+        strides = [stride] + [1] * (int(num_blocks) - 1)
         layers = []
 
         for stride in strides:
@@ -121,12 +132,11 @@ class Wide_ResNet(nn.Module):
         out = F.relu(self.bn1(out))
         out = F.avg_pool2d(out, 8)
         out = out.view(out.size(0), -1)
-       
- 
-   
+
         out = self.linear(out)
 
         return out
+
 
 class ResBlock(nn.Module):
     def __init__(self, in_channels, out_channels, mid_channels=None, bn=False):
@@ -139,13 +149,15 @@ class ResBlock(nn.Module):
             nn.LeakyReLU(),
             nn.Conv2d(in_channels, mid_channels, kernel_size=3, stride=1, padding=1),
             nn.LeakyReLU(),
-            nn.Conv2d(mid_channels, out_channels, kernel_size=1, stride=1, padding=0)]
+            nn.Conv2d(mid_channels, out_channels, kernel_size=1, stride=1, padding=0),
+        ]
         if bn:
             layers.insert(2, nn.BatchNorm2d(out_channels))
         self.convs = nn.Sequential(*layers)
 
     def forward(self, x):
         return x + self.convs(x)
+
 
 class AbstractAutoEncoder(nn.Module):
     __metaclass__ = abc.ABCMeta
@@ -177,7 +189,8 @@ class AbstractAutoEncoder(nn.Module):
     def latest_losses(self):
         """returns the latest losses in a dictionary. Useful for logging."""
         return
-        
+
+
 class CVAE_imagenet(nn.Module):
     def __init__(self, d, k=10, num_classes=2, num_channels=3, **kwargs):
         super(CVAE_imagenet, self).__init__()
@@ -206,7 +219,7 @@ class CVAE_imagenet(nn.Module):
         self.d = d
         self.emb = NearestEmbed(k, d)
 
-        for l in self.modules():
+        for l in self.modules():  # noqa: E741
             if isinstance(l, nn.Linear) or isinstance(l, nn.Conv2d):
                 l.weight.detach().normal_(0, 0.02)
                 torch.fmod(l.weight, 0.04)
@@ -218,8 +231,6 @@ class CVAE_imagenet(nn.Module):
         torch.fmod(self.emb.weight, 0.04)
 
         self.classifier = resnet50(pretrained=True, num_classes=num_classes)
-
-     
 
         self.L_bn = nn.BatchNorm2d(num_channels)
 
@@ -236,7 +247,7 @@ class CVAE_imagenet(nn.Module):
         z_q, _ = self.emb(z_e, weight_sg=True)
         emb, _ = self.emb(z_e.detach())
 
-        l = self.decode(z_q)
+        l = self.decode(z_q)  # noqa: E741
         gx = self.L_bn(l)
-        out = self.classifier(x-gx)
-        return  out, gx, z_e, emb
+        out = self.classifier(x - gx)
+        return out, gx, z_e, emb
