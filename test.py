@@ -110,14 +110,7 @@ if __name__ == "__main__":
     test_dataset = DogCat(r"../test", transforms=transform_test, train=False)  # testset
 
     # BUILD MODEL
-    if args.dataset == "cnn":
-        if args.dataset == "mnist":
-            global_model = CNNMnist(args=args)
-        elif args.dataset == "fmnist":
-            global_model = CNNFashion_Mnist(args=args)
-        elif args.dataset == "cifar":
-            global_model = CNNCifar(args=args)
-    elif args.model == "FedForgery":
+    if args.model == "FedForgery":
         if args.dataset == "forgery_dataset":
             global_model = CVAE_imagenet(d=64, k=128, num_classes=2)
     else:
