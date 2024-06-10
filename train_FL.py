@@ -106,6 +106,7 @@ for epoch in range(epochs):
             optimizer.step()
 
     # Aggregate the local models' weights
+    local_weights = {name: [] for name, _ in local_models[0].named_parameters()}
     global_weights = {
         name: torch.zeros_like(param) for name, param in global_model.named_parameters()
     }
@@ -114,10 +115,18 @@ for epoch in range(epochs):
         weight = len(dataset) / total_images
         for name, param in model.named_parameters():
             global_weights[name] += weight * param
+            local_weights[name].append(param)
 
     # Update the global model's weights
     for name, param in global_model.named_parameters():
         param.data = global_weights[name]
+
+    # print all the parameters of the models (global, local), each name in a line
+    for name, param in global_model.named_parameters():
+        print(name)
+        print(param.data)
+        for i in local_weights[name]:
+            print(i.data)
 
     # Validation
     global_model.eval()
@@ -126,6 +135,7 @@ for epoch in range(epochs):
         for images, labels in global_eval_loader:
             images, labels = images.to(device), labels.to(device)
             outputs, _, _, _ = global_model(images)
+            loss = criterion(outputs, labels)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
