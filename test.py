@@ -42,8 +42,6 @@ def test_inference(args, model, test_dataset):
 
     for batch_idx, (images, labels) in enumerate(testloader):
         images, labels = images.to(device), labels.to(device)
-        print(images.shape, labels.shape)
-        print("images loaded, labels loaded")
 
         # Inference
         outputs = model(images)
@@ -67,22 +65,22 @@ sys.stdout = Logger(stream=sys.stdout)
 
 
 class DogCat(data.Dataset):
-    def __init__(self, root, transforms=None, train=True, test=False):
-        self.test = test
+    def __init__(self, root, transforms=None, subset="train", eval_size=0.2):
         self.transforms = transforms
         imgs = [os.path.join(root, img) for img in os.listdir(root)]
 
-        if self.test:
-            self.imgs = imgs
+        # Split the images into a training set and an evaluation set
+        split_idx = int((1.0 - eval_size) * len(imgs))
+        if subset == "train":
+            self.imgs = imgs[:split_idx]
+        elif subset == "test":
+            self.imgs = imgs[split_idx:]
         else:
-            self.imgs = imgs
+            raise ValueError("subset must be 'train' or 'test'")
 
     def __getitem__(self, index):
         img_path = self.imgs[index]
-        if self.test:
-            label = 1 if "real" in img_path.split("/")[-1] else 0
-        else:
-            label = 1 if "real" in img_path.split("/")[-1] else 0
+        label = 1 if "real" in img_path.split("/")[-1] else 0
         data = Image.open(img_path)
         data = self.transforms(data)
         return data, label
@@ -107,7 +105,7 @@ if __name__ == "__main__":
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ]
     )
-    test_dataset = DogCat(r"../test", transforms=transform_test, train=False)  # testset
+    test_dataset = DogCat(r"../test", transforms=transform_test, subset='test')  # testset
 
     # BUILD MODEL
     if args.model == "FedForgery":
@@ -116,7 +114,7 @@ if __name__ == "__main__":
     else:
         exit("Error: unrecognized model")
 
-    path = "../pretrained/model.pth"
+    path = "../pretrained/retrain_central_model.pth"
     global_model.load_state_dict(torch.load(path))
     if args.gpu:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
