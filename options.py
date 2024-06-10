@@ -7,8 +7,15 @@ import argparse
 
 def args_parser():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--K", type=int, default=10, help="number of clients: K")
     parser.add_argument(
-        "--epochs", type=int, default=100, help="number of rounds of training"
+        "--cid",
+        type=int,
+        required=True,
+        help="Client id. Should be an integer between 0 and NUM_CLIENTS",
+    )
+    parser.add_argument(
+        "--epochs", type=int, default=1, help="number of rounds of training"
     )
     parser.add_argument("--num_users", type=int, default=10, help="number of users: K")
     parser.add_argument(
@@ -20,7 +27,7 @@ def args_parser():
     parser.add_argument(
         "--global_bs", type=int, default=32, help="Global batch size across all GPUs"
     )
-    parser.add_argument("--local_bs", type=int, default=20, help="local batch size: B")
+    parser.add_argument("--local_bs", type=int, default=16, help="local batch size: B")
     parser.add_argument("--lr", type=float, default=0.01, help="learning rate")
     parser.add_argument(
         "--momentum", type=float, default=0.5, help="SGD momentum (default: 0.5)"
