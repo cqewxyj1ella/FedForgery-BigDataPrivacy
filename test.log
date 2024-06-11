@@ -17,3 +17,8 @@ model loaded
 criterion loaded
 Test on 8560 samples
 Test Accuracy: 94.58%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_30.pth
+cuda:0
+model loaded
+criterion loaded

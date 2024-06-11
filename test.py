@@ -4,7 +4,7 @@
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
-
+import glob
 from options import args_parser
 from src.models import CVAE_imagenet
 from PIL import Image
@@ -12,6 +12,7 @@ from torchvision import transforms
 import os
 from torch.utils import data
 import sys
+import flwr as fl
 
 sys.path.append(".")
 
@@ -67,20 +68,38 @@ sys.stdout = Logger(stream=sys.stdout)
 class DogCat(data.Dataset):
     def __init__(self, root, transforms=None, subset="train", eval_size=0.2):
         self.transforms = transforms
-        imgs = [os.path.join(root, img) for img in os.listdir(root)]
+        # ########################################################
+        # if use hybrid dataset in the original paper
+        # ########################################################
+        # imgs = [os.path.join(root, img) for img in os.listdir(root)]
 
-        # Split the images into a training set and an evaluation set
-        split_idx = int((1.0 - eval_size) * len(imgs))
-        if subset == "train":
-            self.imgs = imgs[:split_idx]
-        elif subset == "test":
-            self.imgs = imgs[split_idx:]
-        else:
-            raise ValueError("subset must be 'train' or 'test'")
+        # # Split the images into a training set and an evaluation set
+        # split_idx = int((1.0 - eval_size) * len(imgs))
+        # if subset == "train":
+        #     self.imgs = imgs[:split_idx]
+        # elif subset == "test":
+        #     self.imgs = imgs[split_idx:]
+        # else:
+        #     raise ValueError("subset must be 'train' or 'test'")
+        # ########################################################
+        # if use kaggle dataset, splited into train, val and test
+        # ########################################################
+        imgs = []
+        for folder in os.listdir(root):
+            imgs += [
+                os.path.join(root, folder, img)
+                for img in os.listdir(os.path.join(root, folder))
+            ]
+        self.imgs = imgs
 
     def __getitem__(self, index):
         img_path = self.imgs[index]
-        label = 1 if "real" in img_path.split("/")[-1] else 0
+        # ########################################################
+        # if use hybrid dataset in the original paper
+        # label = 1 if "real" in img_path.split("/")[-1] else 0
+        # ########################################################
+        # if use kaggle dataset, splited into train, val and test
+        label = 1 if "0" in img_path.split("/")[-2] else 0
         data = Image.open(img_path)
         data = self.transforms(data)
         return data, label
@@ -105,7 +124,9 @@ if __name__ == "__main__":
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ]
     )
-    test_dataset = DogCat(r"../test", transforms=transform_test, subset='test')  # testset
+    test_dataset = DogCat(
+        r"../kaggle_dataset/c23/test", transforms=transform_test, subset="test"
+    )  # testset
 
     # BUILD MODEL
     if args.model == "FedForgery":
@@ -114,15 +135,28 @@ if __name__ == "__main__":
     else:
         exit("Error: unrecognized model")
 
-    path = "../pretrained/retrain_central_model.pth"
-    global_model.load_state_dict(torch.load(path))
+    # ########################################################
+    # fl load
+    # ########################################################
+    list_of_files = [fname for fname in glob.glob("../pretrained/fl_2clients/model_*")]
+    latest_round_file = max(list_of_files, key=os.path.getctime)
+    print("Loading pre-trained model from: ", latest_round_file)
+    state_dict = torch.load(latest_round_file)
+    global_model.load_state_dict(state_dict)
+    state_dict_ndarrays = [v.cpu().numpy() for v in global_model.state_dict().values()]
+    parameters = fl.common.ndarrays_to_parameters(state_dict_ndarrays)
+    # parameters can be further used to customize flower strategy
+    # ########################################################
+    # normal load
+    # ########################################################
+    # path = "../pretrained/retrain_central_model.pth"
+    # global_model.load_state_dict(torch.load(path))
     if args.gpu:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     else:
         device = torch.device("cpu")
     print(device)
     global_model.to(device)
-    print("model loaded")
 
     test_acc, test_loss = test_inference(args, global_model, test_dataset)
     print("Test on", len(test_dataset), "samples")
