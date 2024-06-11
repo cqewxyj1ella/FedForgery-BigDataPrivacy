@@ -11,7 +11,6 @@ def args_parser():
     parser.add_argument(
         "--cid",
         type=int,
-        required=True,
         help="Client id. Should be an integer between 0 and NUM_CLIENTS",
     )
     parser.add_argument(

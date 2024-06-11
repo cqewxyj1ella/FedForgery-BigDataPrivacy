@@ -46,9 +46,6 @@ def train(net, trainloader, epochs):
             loss.backward()
             optimizer.step()
 
-            # criterion(net(images.to(DEVICE)), labels.to(DEVICE)).backward()
-            # optimizer.step()
-
 
 def test(net, testloader):
     """Validate the model on the test set."""

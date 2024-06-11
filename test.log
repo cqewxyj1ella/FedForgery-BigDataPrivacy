@@ -27,10 +27,10 @@ Loading pre-trained model from:  ../pretrained/fl_2clients/model_15.pth
 cuda:0
 criterion loaded
 Test on 6857 samples
-Test Accuracy: 91.45% <--- trained a FL model with 2 clients, test on seperated testset
+Test Accuracy: 91.45% <--- trained a FL model with 2 clients on round 15, test on seperated testset
 Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
 Loading pre-trained model from:  ../pretrained/fl_2clients/model_30.pth
 cuda:0
 criterion loaded
 Test on 6857 samples
-Test Accuracy: 92.69%
+Test Accuracy: 92.69% <--- trained a FL model with 2 clients on round 30, test on seperated testset
