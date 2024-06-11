@@ -3,20 +3,20 @@ Initialized model with pretrained weights from https://download.pytorch.org/mode
 Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
 cuda:0
 Test on 42800 samples
-Test Accuracy: 85.54%
+Test Accuracy: 85.54% <--- original checkpoint on whole testset
 
 Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
 cuda:0
 model loaded
 criterion loaded
 Test on 42800 samples
-Test Accuracy: 98.31%
+Test Accuracy: 98.31% <--- trained a central model, test on whole dataset (this is not correct)
 Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
 cuda:0
 model loaded
 criterion loaded
-Test on 8560 samples
-Test Accuracy: 94.58%
+Test on 8560 samples 
+Test Accuracy: 94.58% <--- trained a central model, test only on the eval set
 Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
 Loading pre-trained model from:  ../pretrained/fl_2clients/model_30.pth
 cuda:0
@@ -27,4 +27,4 @@ Loading pre-trained model from:  ../pretrained/fl_2clients/model_15.pth
 cuda:0
 criterion loaded
 Test on 6857 samples
-Test Accuracy: 91.45%
+Test Accuracy: 91.45% <--- trained a FL model with 2 clients, test on seperated testset

@@ -35,7 +35,7 @@ def test_inference(args, model, test_dataset):
     model.eval()
     loss, total, correct = 0.0, 0.0, 0.0
 
-    device = "cuda" if args.gpu else "cpu"
+    device = "cuda:0" if args.gpu else "cpu"
 
     criterion = nn.CrossEntropyLoss().to(device)
     print("criterion loaded")
@@ -139,7 +139,10 @@ if __name__ == "__main__":
     # fl load
     # ########################################################
     list_of_files = [fname for fname in glob.glob("../pretrained/fl_2clients/model_*")]
-    latest_round_file = max(list_of_files, key=os.path.getctime)
+    # latest_round_file = max(list_of_files, key=os.path.getctime)
+    # not choose latest round by time, but by round number
+    round_number = [int(fname.split("_")[-1].split(".")[0]) for fname in list_of_files]
+    latest_round_file = list_of_files[round_number.index(max(round_number))]
     print("Loading pre-trained model from: ", latest_round_file)
     state_dict = torch.load(latest_round_file)
     global_model.load_state_dict(state_dict)
