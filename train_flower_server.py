@@ -19,7 +19,7 @@ def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     return {"accuracy": sum(accuracies) / sum(examples)}
 
 
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 net = CVAE_imagenet(d=64, k=128, num_classes=2).to(DEVICE)
 
 
@@ -51,7 +51,7 @@ class SaveModelStrategy(FedAvg):
             net.load_state_dict(state_dict, strict=True)
 
             # Save the model
-            torch.save(net.state_dict(), f"../pretrained/fl/model_round_{server_round}.pth")
+            torch.save(net.state_dict(), f"../pretrained/fl_2clients/model_{server_round}.pth")
 
         return aggregated_parameters, aggregated_metrics
 
@@ -59,14 +59,14 @@ class SaveModelStrategy(FedAvg):
 # Define strategy
 strategy = SaveModelStrategy(
     evaluate_metrics_aggregation_fn=weighted_average,
-    min_fit_clients=1,
-    min_evaluate_clients=1,
-    min_available_clients=1,
+    min_fit_clients=2,
+    min_evaluate_clients=2,
+    min_available_clients=2,
 )
 
 
 # Define config
-config = ServerConfig(num_rounds=1)
+config = ServerConfig(num_rounds=40)
 
 
 # Flower ServerApp

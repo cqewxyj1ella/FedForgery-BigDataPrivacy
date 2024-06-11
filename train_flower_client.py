@@ -19,6 +19,7 @@ bs = args.local_bs
 epochs = args.epochs
 lr = args.lr
 cid = args.cid
+K = args.K
 
 
 # #############################################################################
@@ -26,7 +27,7 @@ cid = args.cid
 # #############################################################################
 
 warnings.filterwarnings("ignore", category=UserWarning)
-DEVICE = torch.device("cuda:{}".format(cid) if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 
 def train(net, trainloader, epochs):
@@ -65,17 +66,18 @@ def test(net, testloader):
 
 # define a dataset class
 class DogCat(data.Dataset):
-    def __init__(self, root, transforms=None):
+    def __init__(self, root, transforms=None, cid=0, num_clients=2):
         self.transforms = transforms
         # there are two folders under root: 0 and 1. 0 is real, 1 is fake
         # get imgs from both folders
+        # divide the imgs into num_clients parts
         imgs = []
         for folder in os.listdir(root):
             imgs += [
                 os.path.join(root, folder, img)
                 for img in os.listdir(os.path.join(root, folder))
             ]
-        self.imgs = imgs
+        self.imgs = imgs[cid::num_clients]
 
     def __getitem__(self, index):
         img_path = self.imgs[index]
@@ -96,9 +98,13 @@ def load_data():
             Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ]
     )
-    train_dataset = DogCat(r"../kaggle_dataset/c23/train", transforms=transform)
+    train_dataset = DogCat(
+        r"../kaggle_dataset/c23/train", transforms=transform, cid=cid, num_clients=K
+    )
     trainloader = DataLoader(train_dataset, batch_size=bs, shuffle=True)
-    test_dataset = DogCat(r"../kaggle_dataset/c23/val", transforms=transform)
+    test_dataset = DogCat(
+        r"../kaggle_dataset/c23/val", transforms=transform, cid=cid, num_clients=K
+    )
     testloader = DataLoader(test_dataset, batch_size=bs, shuffle=False)
     return trainloader, testloader
 
