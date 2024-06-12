@@ -3,12 +3,20 @@
 from flwr.client import ClientApp, NumPyClient
 from flwr.client.mod import fixedclipping_mod, secaggplus_mod
 from src.models import CVAE_imagenet
-from DP.task import DEVICE, get_weights, load_data, set_weights, test, train
+from DP.task import (
+    DEVICE,
+    NUM_CLIENTS,
+    BATCH_SIZE,
+    get_weights,
+    load_data,
+    set_weights,
+    test,
+    train,
+)
 import sys
 
 # Load model and data (simple CNN, CIFAR-10)
-bs = 32
-NUM_CLIENTS = 2
+bs = BATCH_SIZE
 
 
 # Define FlowerClient and client_fn

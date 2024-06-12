@@ -11,7 +11,7 @@ from flwr.server.strategy import (
 from flwr.server.workflow import DefaultWorkflow, SecAggPlusWorkflow
 import flwr as fl
 from src.models import CVAE_imagenet
-from DP.task import get_weights
+from DP.task import MIN_CLIENTS, NORM, DEVICE, get_weights
 import torch
 import numpy as np
 
@@ -37,7 +37,6 @@ def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     }
 
 
-DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 net = CVAE_imagenet(d=64, k=128, num_classes=2).to(DEVICE)
 
 
@@ -80,18 +79,17 @@ class SaveModelStrategy(FedAvg):
 ndarrays = get_weights(CVAE_imagenet(d=64, k=128, num_classes=2))
 parameters = ndarrays_to_parameters(ndarrays)
 
-
 # Define strategy
 strategy = SaveModelStrategy(
     fraction_fit=0.2,
     fraction_evaluate=0.0,  # Disable evaluation for demo purpose
-    min_fit_clients=2,
-    min_available_clients=2,
+    min_fit_clients=MIN_CLIENTS,
+    min_available_clients=MIN_CLIENTS,
     fit_metrics_aggregation_fn=weighted_average,
     initial_parameters=parameters,
 )
 strategy = DifferentialPrivacyClientSideFixedClipping(
-    strategy, noise_multiplier=0.2, clipping_norm=2, num_sampled_clients=2
+    strategy, noise_multiplier=0.2, clipping_norm=NORM, num_sampled_clients=MIN_CLIENTS
 )
 
 

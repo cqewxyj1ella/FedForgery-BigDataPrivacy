@@ -7,8 +7,13 @@ import torch
 from torch.utils import data
 from torch.utils.data import DataLoader, random_split
 from torchvision.transforms import Compose, Normalize, ToTensor, Resize
+from tqdm import tqdm
 
-DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+NUM_CLIENTS = 100
+MIN_CLIENTS = 10
+NORM = 5.0
+BATCH_SIZE = 32
 
 
 # define a dataset class
@@ -27,6 +32,8 @@ class DogCat(data.Dataset):
         self.imgs = imgs
 
     def __getitem__(self, index):
+        # if the index is out of range, the dataset will automatically wrap around
+        index = index % len(self.imgs)
         img_path = self.imgs[index]
         label = 1 if "0" in img_path.split("/")[-2] else 0
         data = Image.open(img_path)
@@ -79,7 +86,7 @@ def train(net, trainloader, valloader, epochs, device):
     optimizer = torch.optim.Adam(net.parameters())
     net.train()
     for _ in range(epochs):
-        for images, labels in trainloader:
+        for images, labels in tqdm(trainloader, "Training"):
             images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
             # Forward pass
@@ -108,7 +115,7 @@ def test(net, testloader):
     criterion = torch.nn.CrossEntropyLoss()
     correct, loss = 0, 0.0
     with torch.no_grad():
-        for images, labels in testloader:
+        for images, labels in tqdm(testloader, "Testing"):
             images, labels = images.to(DEVICE), labels.to(DEVICE)
             outputs, _, _, _ = net(images.to(DEVICE))
             loss += criterion(outputs, labels).item()
