@@ -12,7 +12,7 @@ from torchvision import transforms
 import os
 from torch.utils import data
 import sys
-import flwr as fl
+# import flwr as fl
 
 sys.path.append(".")
 
@@ -35,7 +35,7 @@ def test_inference(args, model, test_dataset):
     model.eval()
     loss, total, correct = 0.0, 0.0, 0.0
 
-    device = "cuda:0" if args.gpu else "cpu"
+    device = "cuda:1" if args.gpu else "cpu"
 
     criterion = nn.CrossEntropyLoss().to(device)
     print("criterion loaded")
@@ -142,25 +142,28 @@ if __name__ == "__main__":
     # latest_round_file = max(list_of_files, key=os.path.getctime)
     # not choose latest round by time, but by round number
     round_number = [int(fname.split("_")[-1].split(".")[0]) for fname in list_of_files]
-    latest_round_file = list_of_files[round_number.index(max(round_number))]
-    print("Loading pre-trained model from: ", latest_round_file)
-    state_dict = torch.load(latest_round_file)
-    global_model.load_state_dict(state_dict)
-    state_dict_ndarrays = [v.cpu().numpy() for v in global_model.state_dict().values()]
-    parameters = fl.common.ndarrays_to_parameters(state_dict_ndarrays)
-    # parameters can be further used to customize flower strategy
-    # ########################################################
-    # normal load
-    # ########################################################
-    # path = "../pretrained/retrain_central_model.pth"
-    # global_model.load_state_dict(torch.load(path))
+    latest_round_file = list_of_files[round_number.index(min(round_number))]
     if args.gpu:
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     else:
         device = torch.device("cpu")
     print(device)
-    global_model.to(device)
+    for file in list_of_files[1:-1]:
+        model_file = file
+        print("Loading pre-trained model from: ", model_file)
+        state_dict = torch.load(model_file)
+        global_model.load_state_dict(state_dict)
+        # state_dict_ndarrays = [v.cpu().numpy() for v in global_model.state_dict().values()]
+        # parameters = fl.common.ndarrays_to_parameters(state_dict_ndarrays)
+        # parameters can be further used to customize flower strategy
+        # ########################################################
+        # normal load
+        # ########################################################
+        # path = "../pretrained/retrain_central_model.pth"
+        # global_model.load_state_dict(torch.load(path))
+        
+        global_model.to(device)
 
-    test_acc, test_loss = test_inference(args, global_model, test_dataset)
-    print("Test on", len(test_dataset), "samples")
-    print("Test Accuracy: {:.2f}%".format(100 * test_acc))
+        test_acc, test_loss = test_inference(args, global_model, test_dataset)
+        print("Test on", len(test_dataset), "samples")
+        print("Test Accuracy: {:.2f}%".format(100 * test_acc))

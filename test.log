@@ -34,3 +34,163 @@ cuda:0
 criterion loaded
 Test on 6857 samples
 Test Accuracy: 92.69% <--- trained a FL model with 2 clients on round 30, test on seperated testset
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_1.pth
+cuda:1
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 77.42% <--- trained a FL model with 2 clients on round 1, test on seperated testset
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_7.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.51%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_27.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.73%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_16.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.01%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_30.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.69%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_21.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.70%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_22.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.88%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_19.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.64%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_34.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.72%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_4.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.69%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_24.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.95%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_13.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.86%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_8.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.52%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_6.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.05%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_10.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.23%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_38.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.92%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_33.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.10%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_40.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.92%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_25.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.04%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_31.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.53%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_9.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.03%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_37.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.41%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_39.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.88%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_2.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 80.92%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_35.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.37%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_12.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 89.34%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_20.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.07%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_18.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.71%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_29.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.27%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_26.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.14%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_11.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.09%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_36.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.72%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_28.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.80%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_5.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 86.45%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_3.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 90.90%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 77.44%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_17.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.43%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_23.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.59%
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_15.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 91.45%
