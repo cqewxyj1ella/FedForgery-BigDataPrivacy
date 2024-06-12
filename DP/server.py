@@ -101,7 +101,7 @@ def main(driver: Driver, context: Context) -> None:
     # Construct the LegacyContext
     context = LegacyContext(
         state=context.state,
-        config=ServerConfig(num_rounds=1),
+        config=ServerConfig(num_rounds=30),
         strategy=strategy,
     )
 
@@ -119,7 +119,7 @@ def main(driver: Driver, context: Context) -> None:
 
 if __name__ == "__main__":
     # Define config
-    config = ServerConfig(num_rounds=1)
+    config = ServerConfig(num_rounds=30)
     from flwr.server import start_server
 
     start_server(
