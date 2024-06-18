@@ -194,3 +194,187 @@ Loading pre-trained model from:  ../pretrained/fl_2clients/model_15.pth
 criterion loaded
 Test on 6857 samples
 Test Accuracy: 91.45%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_dp/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 51.03%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.57%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_4.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_6.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_2.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_5.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_3.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.57%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_4.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_6.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_2.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_5.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_3.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.00%
+Loading pre-trained model from:  ../../pretrained/fl_dp/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 49.03%
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/retrain_central_model.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 58.84%
+[[2269 1091]
+ [1731 1766]]
+True positive =  2269
+False positive =  1091
+False negative =  1731
+True negative =  1766
+
+
+Calculated Accuracy 58.84497593699869
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_1.pth
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 77.44%
+[[2603  757]
+ [ 790 2707]]
+True positive =  2603
+False positive =  757
+False negative =  790
+True negative =  2707
+
+
+Calculated Accuracy 77.43911331486073
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_2clients/model_30.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 92.69%
+[[3162  198]
+ [ 303 3194]]
+True positive =  3162
+False positive =  198
+False negative =  303
+True negative =  3194
+
+
+Calculated Accuracy 92.69359778328715
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/fl_dp/model_1.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 51.03%
+[[  21 3339]
+ [  19 3478]]
+True positive =  21
+False positive =  3339
+False negative =  19
+True negative =  3478
+
+
+Calculated Accuracy 51.02814641971708
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../../pretrained/model.pth
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/retrain_central_model.pth
+criterion loaded
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/model.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 87.79%
+[[2855  505]
+ [ 332 3165]]
+True positive =  2855
+False positive =  505
+False negative =  332
+True negative =  3165
+
+
+Calculated Accuracy 87.79349569782704
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/retrain_central_model.pth
+criterion loaded
+Test on 6857 samples
+Test Accuracy: 58.84%
+[[2269 1091]
+ [1731 1766]]
+True positive =  2269
+False positive =  1091
+False negative =  1731
+True negative =  1766
+
+
+Calculated Accuracy 58.84497593699869
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/retrain_central_model.pth
+criterion loaded
+Test on 35262 samples
+Test Accuracy: 58.16%
+[[10698  6582]
+ [ 8171  9811]]
+True positive =  10698
+False positive =  6582
+False negative =  8171
+True negative =  9811
+
+
+Calculated Accuracy 58.16176053542057
+Initialized model with pretrained weights from https://download.pytorch.org/models/resnet50-19c8e357.pth
+cuda:1
+Loading pre-trained model from:  ../pretrained/xception-b5690688.pth
