@@ -12,7 +12,7 @@ from tqdm import tqdm
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 NUM_CLIENTS = 100
 MIN_CLIENTS = 10
-NORM = 5.0
+NORM = 5
 BATCH_SIZE = 32
 
 

@@ -34,7 +34,7 @@ class FlowerClient(NumPyClient):
     def fit(self, parameters, config):
         set_weights(self.model, parameters)
         results = train(
-            self.model, self.trainloader, self.testloader, epochs=2, device=DEVICE
+            self.model, self.trainloader, self.testloader, epochs=1, device=DEVICE
         )
         return get_weights(self.model), len(self.trainloader.dataset), results
 
